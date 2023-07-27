@@ -2,7 +2,6 @@ package com.example;
 
 import java.util.Scanner;
 
-
 public class TestScanner {
     public static void main(String[] args) {
 
@@ -24,7 +23,11 @@ public class TestScanner {
         System.out.println("Sexo do Cliente1: " + cliente3.getSexo());
         System.out.println("Renda do Cliente1: " + cliente3.getRenda());
         System.out.println("----------------------");
-        
+
+        double x = 10, y = 5, z;
+        z = x % y;
+        x+++y
+        ++x
     }
 }
 
