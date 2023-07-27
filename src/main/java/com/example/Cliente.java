@@ -19,7 +19,7 @@ public class Cliente {
         this();
         System.out.println("Utilizando Parâmetros");
         System.out.println("----------------------");
-        
+
         setNome(nomeCliente);
         setSexo(sexoCliente);
         setAnoNasc(anoNascCliente);
@@ -50,6 +50,7 @@ public class Cliente {
         this.nomeCliente = (nome instanceof String) ? nome : "";
     }
     public void setSexo(char sexo){
+        sexo = Character.toUpperCase(sexo);
         this.sexoCliente = (sexo == 'M' || sexo == 'F') ? sexo : ' ';
     }
     public void setAnoNasc(int ano){
@@ -61,4 +62,5 @@ public class Cliente {
     public void setVIP(boolean vip){
         this.VIP = vip;
     }
+
 }

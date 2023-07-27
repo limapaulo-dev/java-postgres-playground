@@ -5,10 +5,12 @@ public class Classes {
         System.out.println("\nEstudo sobre Classes");
         Cliente cliente1 = new Cliente();
 
-        cliente1.setNome("Roberto");
-        cliente1.setSexo('M');
+        cliente1.setNome("Roberto Nascimento");
+        cliente1.setSexo('m');
         cliente1.setAnoNasc(1957);
         cliente1.setRenda(1900.00);
+
+        var splitNamecliente1 = cliente1.getNome().split(" ");
 
         System.out.println("Nome do Cliente1: " + cliente1.getNome());
         System.out.println("Sexo do Cliente1: " + cliente1.getSexo());
@@ -17,7 +19,7 @@ public class Classes {
         System.out.println("Cliente1 é VIP?: " + cliente1.isVIP());
         System.out.println("----------------------");
 
-        Cliente cliente2 = new Cliente("Maria", 'F', 1967, 2900.00);
+        Cliente cliente2 = new Cliente("Maria Eduarda", 'f', 1967, 2900.00);
 
         System.out.println("Nome do Cliente2: " + cliente2.getNome());
         System.out.println("Sexo do Cliente2: " + cliente2.getSexo());
