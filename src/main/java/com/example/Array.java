@@ -16,15 +16,24 @@ public class Array {
         }
     }
 
-/*     public static void printIntMatrix(int[] array){
-        for (var element : array) {     
-            if (element.getClass().isArray()) {
-                printIntMatrix(element);
+    public static <T> void arrayIterator(T[] array){
+        for (int i = 0; i<array.length; i++){
+            if (array[i].getClass().isArray()){
+                arrayIterator((T[]) array[i]);
+                System.out.println("");
             } else {
-                System.out.println(element);
-            }           
+                System.out.print(array[i] + " ");
+            }
         }
-    } */
+
+/*         for (T element : array) {
+            if (element.getClass().isArray()){
+                arrayIterator((T[]) element);
+            } else {
+                System.out.print(element + " ");
+            }
+        } */
+    }
 
     public static void main(String[] args) {
 
@@ -40,7 +49,9 @@ public class Array {
     int array3d[][][] = new int[3][3][3]; //3d array
     Object array2d[][] = {{25, 21, 54}, {12, 44, 57}, {"hi"}};
 
-    double doubleArray[] = {10.11d, 50.12d, 78.54d};
+    double doubleArray[][] = {{10.11d, 50.12d, 78.54d}, {10.11d, 50.12d, 78.54d}};
+
+    Integer[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         
     System.out.println(Arrays.toString(intArray));
     System.out.println("");
@@ -50,11 +61,11 @@ public class Array {
     System.out.println(intArray[2]);
     System.out.println("");
 
-    iterateIntArray(newArray);
+    arrayIterator(array2d);
+    System.out.println("");
 
-/*     printIntMatrix(array2d); */
+    arrayIterator(matrix);
+    System.out.println("");
 
     }
-
-    
 }
