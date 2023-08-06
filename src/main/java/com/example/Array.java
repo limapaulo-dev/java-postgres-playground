@@ -16,23 +16,25 @@ public class Array {
         }
     }
 
-    public static <T> void arrayIterator(T[] array){
-        for (int i = 0; i<array.length; i++){
-            if (array[i].getClass().isArray()){
-                arrayIterator((T[]) array[i]);
-                System.out.println("");
-            } else {
-                System.out.print(array[i] + " ");
-            }
+    public static void fillDoubleArray(double[][] array){      
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++){
+                double a = Math.round(Math.random()* 100);
+                double b = Math.round(Math.random()* 100) / 100d;
+                array[i][j] = a + b;
+            }           
         }
+    }
 
-/*         for (T element : array) {
-            if (element.getClass().isArray()){
-                arrayIterator((T[]) element);
-            } else {
-                System.out.print(element + " ");
+    public static void printDoubleArray(double[][] array){      
+        for (int i = 0; i < array.length; i++) {
+            if (i > 0){
+                System.out.println("");
             }
-        } */
+            for (int j = 0; j < array[i].length; j++){
+                System.out.printf("%5.2f ", array[i][j]);
+            }           
+        }
     }
 
     public static void main(String[] args) {
@@ -49,9 +51,9 @@ public class Array {
     int array3d[][][] = new int[3][3][3]; //3d array
     Object array2d[][] = {{25, 21, 54}, {12, 44, 57}, {"hi"}};
 
-    double doubleArray[][] = {{10.11d, 50.12d, 78.54d}, {10.11d, 50.12d, 78.54d}};
+    double doubleMatrix[][] = new double[5][5];
 
-    Integer[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Integer [][][] matrix = new Integer[3][3][3];
         
     System.out.println(Arrays.toString(intArray));
     System.out.println("");
@@ -61,10 +63,8 @@ public class Array {
     System.out.println(intArray[2]);
     System.out.println("");
 
-    arrayIterator(array2d);
-    System.out.println("");
-
-    arrayIterator(matrix);
+    fillDoubleArray(doubleMatrix);
+    printDoubleArray(doubleMatrix);
     System.out.println("");
 
     }
