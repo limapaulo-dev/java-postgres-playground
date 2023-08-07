@@ -15,27 +15,30 @@ public class AppPostgresDB {
     }
 
     public AppPostgresDB(){
+        Statement statement = null;
+
         try (var conn = getConnection()){
-            System.out.println("Conexão com sucesso");
+            System.out.println("DB conected");
+            
+            statement = conn.createStatement();
 
             loadDriverJDBC();
-            listStates(conn);
-            searchState(conn, "TO");
+            listStates(conn, statement);
+            searchState(conn, statement, "TO");
 
         } catch (SQLException e) {
+            if (statement == null){
                 System.err.println("Não foi possível conectar ao DB");
                 System.err.println(e.getMessage());
+            } else {
+                System.err.println("Criação de Statement falhou");
+                System.err.println(e.getMessage());
+            }
         }
-
     }
 
-    private void searchState(Connection conn, String uf) {
-        
-    }
-
-    private void listStates(Connection conn) {
+    private void searchState(Connection conn, Statement statement, String uf) {
         try{
-            var statement = conn.createStatement();
             var estados = statement.executeQuery("select * from estado");
 
             while(estados.next()){
@@ -43,7 +46,21 @@ public class AppPostgresDB {
             }
  
         } catch (SQLException e) {
-            System.err.println("Não foi possível executar statment SQL no DB");
+            System.err.println("Não foi possível executar busca SQL no DB");
+            System.err.println(e.getMessage());
+        };
+    }
+
+    private void listStates(Connection conn, Statement statement) {
+        try{
+            var estados = statement.executeQuery("select * from estado");
+
+            while(estados.next()){
+                System.out.printf("Id: %d Nome: %s UF: %s\n", estados.getInt("id"), estados.getString("nome"), estados.getString("uf"));
+            }
+ 
+        } catch (SQLException e) {
+            System.err.println("Não foi possível executar statement SQL no DB");
             System.err.println(e.getMessage());
         };
     }
