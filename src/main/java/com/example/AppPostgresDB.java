@@ -11,21 +11,31 @@ public class AppPostgresDB {
     private static final String PASSWORD = "";
 
     public static void main(String[] args) {
-        loadDriverJDBC();
-        listStates();
-        searchState("TO");
+        new AppPostgresDB();
     }
 
-    private static void searchState(String string) {
-        
-    }
-
-    private static void listStates() {
-        Statement statement = null;
+    public AppPostgresDB(){
         try (var conn = getConnection()){
             System.out.println("Conexão com sucesso");
 
-            statement = conn.createStatement();
+            loadDriverJDBC();
+            listStates(conn);
+            searchState(conn, "TO");
+
+        } catch (SQLException e) {
+                System.err.println("Não foi possível conectar ao DB");
+                System.err.println(e.getMessage());
+        }
+
+    }
+
+    private void searchState(Connection conn, String uf) {
+        
+    }
+
+    private void listStates(Connection conn) {
+        try{
+            var statement = conn.createStatement();
             var estados = statement.executeQuery("select * from estado");
 
             while(estados.next()){
@@ -33,21 +43,16 @@ public class AppPostgresDB {
             }
  
         } catch (SQLException e) {
-            if (statement == null) {
-                System.err.println("Não foi possível conectar ao DB");
-                System.err.println(e.getMessage());
-            } else {
-                System.err.println("Não foi possível executar statment SQL no DB");
-                System.err.println(e.getMessage());
-            }
+            System.err.println("Não foi possível executar statment SQL no DB");
+            System.err.println(e.getMessage());
         };
     }
     
-    private static Connection getConnection() throws SQLException{
+    private Connection getConnection() throws SQLException{
         return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
     }
 
-    private static void loadDriverJDBC() {
+    private void loadDriverJDBC() {
         try {
             Class.forName("org.postgresql.Driver");
 
