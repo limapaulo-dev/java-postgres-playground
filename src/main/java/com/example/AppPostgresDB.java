@@ -15,34 +15,34 @@ public class AppPostgresDB {
     }
 
     public AppPostgresDB(){
-        Statement statement = null;
 
         try (var conn = getConnection()){
             System.out.println("DB conected");
             
-            statement = conn.createStatement();
-
             loadDriverJDBC();
-            listStates(conn, statement);
-            searchState(conn, statement, "TO");
+            listStates(conn);
+            System.out.println("");
+            searchState(conn,"TO");
 
         } catch (SQLException e) {
-            if (statement == null){
-                System.err.println("Não foi possível conectar ao DB");
-                System.err.println(e.getMessage());
-            } else {
-                System.err.println("Criação de Statement falhou");
-                System.err.println(e.getMessage());
-            }
+            System.err.println("Não foi possível conectar ao DB");
+            System.err.println(e.getMessage());
         }
     }
 
-    private void searchState(Connection conn, Statement statement, String uf) {
-        try{
-            var estados = statement.executeQuery("select * from estado");
+    private void searchState(Connection conn, String uf) {
 
-            while(estados.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", estados.getInt("id"), estados.getString("nome"), estados.getString("uf"));
+        try{
+            
+            var sql = "select * from estado where uf= ?";
+            var statement = conn.prepareStatement(sql);
+
+            statement.setString(1, uf);
+
+            var result = statement.executeQuery();           
+
+            while(result.next()){
+                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
             }
  
         } catch (SQLException e) {
@@ -51,12 +51,13 @@ public class AppPostgresDB {
         };
     }
 
-    private void listStates(Connection conn, Statement statement) {
+    private void listStates(Connection conn) {
         try{
-            var estados = statement.executeQuery("select * from estado");
+            Statement statement = conn.createStatement();
+            var result = statement.executeQuery("select * from estado");
 
-            while(estados.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", estados.getInt("id"), estados.getString("nome"), estados.getString("uf"));
+            while(result.next()){
+                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
             }
  
         } catch (SQLException e) {
