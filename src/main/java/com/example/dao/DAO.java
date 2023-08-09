@@ -4,11 +4,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-public class GeneralDAO {
+public class DAO {
 
     private Connection conn;
 
-    public GeneralDAO(Connection conn) throws SQLException {
+    public DAO(Connection conn) throws SQLException {
         this.conn = conn;
     }
 
@@ -26,11 +26,11 @@ public class GeneralDAO {
         }
         return result;
     }
-    
-    public void printTable(ResultSet result) throws SQLException {
+
+    public void printTable(String tableName) throws SQLException {
+        var result = findTable(tableName);
 
         var tableMeta = result.getMetaData();
-        String tableName = tableMeta.getTableName(1);
         int cols = tableMeta.getColumnCount();
 
         System.out.println();
@@ -39,7 +39,7 @@ public class GeneralDAO {
         printColumnTitles(tableMeta, cols);
         printColumnContent(result, cols);
     }
-
+    
     private void printTableName(String tableName) {
         System.out.println("Table name: " + tableName);
     }

@@ -6,7 +6,7 @@ public class Estado {
     private String uf;
     private RegiaoGeografica regiao;
     private int areaKM;
-    private int populacao;
+    private long populacao;
     
     public Long getId() {
         return id;
@@ -38,7 +38,7 @@ public class Estado {
     public void setAreaKM(int areaKM) {
         this.areaKM = areaKM;
     }
-    public int getPopulacao() {
+    public long getPopulacao() {
         return populacao;
     }
     public void setPopulacao(int populacao) {
