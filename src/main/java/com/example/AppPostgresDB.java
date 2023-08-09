@@ -7,6 +7,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.example.model.Marca;
+import com.example.model.Produto;
+
 public class AppPostgresDB {
     private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
     private static final String USERNAME = "gitpod";
@@ -33,9 +36,16 @@ public class AppPostgresDB {
             produto.setNome("Produto de teste");
             produto.setValor(250.55d);
 
-            addProduct(conn, produto);
+            insertProduct(conn, produto);
 
-            deleteProduct(conn, 206);
+            var produto2 = new Produto();
+            produto2.setMarca(marca);
+            produto2.setNome("Produto Mais novo");
+            produto2.setValor(513.55d);
+
+            updateProduct(conn, produto2, 211);
+
+            deleteProduct(conn, 208);
 
             findTable(conn, "produto");
 
@@ -67,14 +77,13 @@ public class AppPostgresDB {
             printElement(result, metadata, col);
 
         } catch (SQLException e) {
-            System.err.println("Elemento not found");
+            System.err.println("Element not found");
             e.printStackTrace();
         }
     }
 
     private void printElement(ResultSet result, ResultSetMetaData metadata, int col) throws SQLException {
         if (result.next()) {
-
             for (int i = 1; i <= col; i++) {
                 System.out.printf("%-25s | ", metadata.getColumnName(i));
             }
@@ -83,6 +92,7 @@ public class AppPostgresDB {
             for (int i = 1; i <= col; i++) {
                 System.out.printf("%-25s | ", result.getString(i));
             }
+            System.out.println();
             System.out.println();
         }
     }
@@ -95,12 +105,12 @@ public class AppPostgresDB {
             var statement = conn.prepareStatement(sql);
 
             statement.setLong(1, id);
+            findById(conn, "produto", id);
 
             if (statement.executeUpdate() == 1) {
                 System.out.println("Product deleted:");
-                findById(conn, "produto", id);
             } else {
-                System.err.println("Product not found");
+                System.err.println("Delete Failed: Product not found");
             }
 
         } catch (SQLException e) {
@@ -109,7 +119,7 @@ public class AppPostgresDB {
         }
     }
 
-    private void addProduct(Connection conn, Produto produto) {
+    private void insertProduct(Connection conn, Produto produto) {
         var sql = "insert into produto (nome, marca_id, valor) values (?, ?, ?)";
 
         try {
@@ -120,10 +130,31 @@ public class AppPostgresDB {
             statement.setDouble(3, produto.getValor());
 
             statement.executeUpdate();
-            findById(conn, "produto", produto.getId());
             
         } catch (SQLException e) {
             System.err.println("Insert Failed");
+            e.printStackTrace();
+        }
+    }
+
+    private void updateProduct(Connection conn, Produto produto, long id) {
+        var sql = "update produto set nome = ?, marca_id = ?, valor = ? where id = ?";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setString(1, produto.getNome());
+            statement.setLong(2, produto.getMarca().getId());
+            statement.setDouble(3, produto.getValor());
+            statement.setLong(4, id);
+
+            statement.executeUpdate();
+            System.out.println();
+            System.err.println("update worked");
+            findById(conn, "produto", id);
+            
+        } catch (SQLException e) {
+            System.err.println("update Failed");
             e.printStackTrace();
         }
     }
@@ -151,7 +182,6 @@ public class AppPostgresDB {
 
         System.out.println();
         printTableName(tableName);
-        System.out.println();
 
         printColumnTitles(tableMeta, cols);
         printColumnContent(result, cols);
