@@ -19,7 +19,6 @@ public class AppPostgresDB {
         try (var conn = getConnection()){
             System.out.println("DB conected");
             
-            loadDriverJDBC();
             listStates(conn);
             System.out.println("");
             searchState(conn,"TO");
