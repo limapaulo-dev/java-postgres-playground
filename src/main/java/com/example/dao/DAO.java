@@ -12,6 +12,19 @@ public class DAO {
         this.conn = conn;
     }
 
+    public void fixSeq(String campo, int index){
+        var sql = "ALTER SEQUENCE " + campo + " RESTART WITH " + index;
+
+        try {
+            var statement = conn.createStatement();
+            statement.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            System.err.println("Query Failed");
+            e.printStackTrace();
+        }
+    }
+
     public ResultSet findTable(String tableName) {
         var sql = "select * from " + tableName;
         ResultSet result = null;

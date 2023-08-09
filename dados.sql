@@ -25,7 +25,7 @@ CREATE TABLE regiao_geografica (
 CREATE UNIQUE INDEX ix_regiao ON regiao_geografica (nome);
 
 CREATE TABLE estado (
-    id serial PRIMARY KEY NOT NULL,
+    id serial primary key not null,
     nome varchar(75) NOT NULL,
     uf varchar(2) NOT NULL,
     regiao_id int NOT NULL,
@@ -38,7 +38,7 @@ CREATE UNIQUE INDEX ix_estado ON estado (nome);
 CREATE UNIQUE INDEX ix_uf ON estado (uf);
 
 CREATE TABLE cidade (
-    id serial PRIMARY KEY NOT NULL,
+    id serial primary key not null,
     nome varchar(120) NOT NULL,
     estado_id int NOT NULL,
     capital boolean not null default false,
@@ -15656,3 +15656,6 @@ INSERT INTO item_venda (venda_id, produto_id, quant, valor) VALUES (999, 35, 10,
 INSERT INTO item_venda (venda_id, produto_id, quant, valor) VALUES (999, 115, 8, 81);
 INSERT INTO item_venda (venda_id, produto_id, quant, valor) VALUES (999, 191, 8, 42);
 INSERT INTO item_venda (venda_id, produto_id, quant, valor) VALUES (1000, 112, 1, 85);
+
+ALTER SEQUENCE estado_id_seq RESTART WITH 28;
+ALTER SEQUENCE cidade_id_seq RESTART WITH 5565;

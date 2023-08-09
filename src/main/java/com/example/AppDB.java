@@ -40,7 +40,7 @@ public class AppDB {
 
             produtoDAO.update(produto2, 211);
 
-            produtoDAO.deleteByID(">", 201);
+            produtoDAO.deleteByID(">", 200);
 
             var dao = new DAO(conn);
             dao.printTable("produto");
@@ -50,8 +50,8 @@ public class AppDB {
             regiao.setId((long)5);
 
             var estado = new Estado();
-            estado.setNome("União do Sul");
-            estado.setUf("US");
+            estado.setNome("XXXXX");
+            estado.setUf("XX");
             estado.setRegiao(regiao);
             estado.setAreaKM(576774);
             estado.setPopulacao(30000000);
