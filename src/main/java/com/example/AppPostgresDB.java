@@ -12,7 +12,7 @@ public class AppPostgresDB {
     private static final String USERNAME = "gitpod";
     private static final String PASSWORD = "";
 
-    private Connection getConnection() throws SQLException{
+    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
     }
 
@@ -20,20 +20,111 @@ public class AppPostgresDB {
         new AppPostgresDB();
     }
 
-    public AppPostgresDB(){
+    public AppPostgresDB() {
 
-        try (var conn = getConnection()){
+        try (var conn = getConnection()) {
             System.out.println("DB conected");
 
+            var marca = new Marca();
+            marca.setId((long) 1);
+
+            var produto = new Produto();
+            produto.setMarca(marca);
+            produto.setNome("Produto de teste");
+            produto.setValor(250.55d);
+
+            addProduct(conn, produto);
+
+            deleteProduct(conn, 206);
+
             findTable(conn, "produto");
-            
-/*             listStates(conn);
-            System.out.println("");
-            searchState(conn,"TO"); */
+
+            /*
+             * listStates(conn);
+             * System.out.println("");
+             * searchState(conn,"TO");
+             */
 
         } catch (SQLException e) {
             System.err.println("Não foi possível conectar ao DB");
             System.err.println(e.getMessage());
+        }
+    }
+
+    private void findById(Connection conn, String tableName, long id) {
+        var sql = "select * from " + tableName +" where id = ?";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+
+            var result = statement.executeQuery();
+            var metadata = result.getMetaData();
+
+            int col = metadata.getColumnCount();
+
+            printElement(result, metadata, col);
+
+        } catch (SQLException e) {
+            System.err.println("Elemento not found");
+            e.printStackTrace();
+        }
+    }
+
+    private void printElement(ResultSet result, ResultSetMetaData metadata, int col) throws SQLException {
+        if (result.next()) {
+
+            for (int i = 1; i <= col; i++) {
+                System.out.printf("%-25s | ", metadata.getColumnName(i));
+            }
+            System.out.println();
+
+            for (int i = 1; i <= col; i++) {
+                System.out.printf("%-25s | ", result.getString(i));
+            }
+            System.out.println();
+        }
+    }
+
+    private void deleteProduct(Connection conn, long id) {
+
+        var sql = "delete from produto where id = ?";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+
+            if (statement.executeUpdate() == 1) {
+                System.out.println("Product deleted:");
+                findById(conn, "produto", id);
+            } else {
+                System.err.println("Product not found");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Delete Failed");
+            e.printStackTrace();
+        }
+    }
+
+    private void addProduct(Connection conn, Produto produto) {
+        var sql = "insert into produto (nome, marca_id, valor) values (?, ?, ?)";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setString(1, produto.getNome());
+            statement.setLong(2, produto.getMarca().getId());
+            statement.setDouble(3, produto.getValor());
+
+            statement.executeUpdate();
+            findById(conn, "produto", produto.getId());
+            
+        } catch (SQLException e) {
+            System.err.println("Insert Failed");
+            e.printStackTrace();
         }
     }
 
@@ -53,7 +144,7 @@ public class AppPostgresDB {
     }
 
     private void travelTable(ResultSet result) throws SQLException {
-        
+
         var tableMeta = result.getMetaData();
         String tableName = tableMeta.getTableName(1);
         int cols = tableMeta.getColumnCount();
@@ -75,55 +166,56 @@ public class AppPostgresDB {
             System.out.printf("%-25s | ", tableMeta.getColumnName(i));
         }
         System.out.println();
-    }  
-    
+    }
+
     private void printColumnContent(ResultSet result, int cols) throws SQLException {
-        while (result.next()){
+        while (result.next()) {
             for (int i = 1; i <= cols; i++) {
                 System.out.printf("%-25s | ", result.getString(i));
-            } 
-            System.out.println();                
+            }
+            System.out.println();
         }
         System.out.println();
     }
 
     private void searchState(Connection conn, String uf) {
 
-        try{
-            
+        try {
+
             var sql = "select * from estado where uf= ?";
             var statement = conn.prepareStatement(sql);
 
             statement.setString(1, uf);
 
-            var result = statement.executeQuery();           
+            var result = statement.executeQuery();
 
-            while(result.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
+            while (result.next()) {
+                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"),
+                        result.getString("uf"));
             }
- 
+
         } catch (SQLException e) {
             System.err.println("Não foi possível executar busca SQL no DB");
             System.err.println(e.getMessage());
-        };
+        }
+        ;
     }
 
     private void listStates(Connection conn) {
-        try{
+        try {
             Statement statement = conn.createStatement();
             var result = statement.executeQuery("select * from estado");
 
-            while(result.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
+            while (result.next()) {
+                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"),
+                        result.getString("uf"));
             }
- 
+
         } catch (SQLException e) {
             System.err.println("Não foi possível executar statement SQL no DB");
             System.err.println(e.getMessage());
-        };
+        }
+        ;
     }
-
-
-    
 
 }
