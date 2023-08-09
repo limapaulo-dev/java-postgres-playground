@@ -103,8 +103,8 @@ public class ProdutoDAO {
             statement.setLong(1, id);
             findById("produto", id);
 
-            if (statement.executeUpdate() == 1) {
-                System.out.println("Product deleted:");
+            if (statement.executeUpdate() >= 1) {
+                System.out.println("Product deleted");   
             } else {
                 System.err.println("Delete Failed: Product not found");
             }

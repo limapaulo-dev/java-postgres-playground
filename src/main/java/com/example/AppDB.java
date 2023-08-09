@@ -44,7 +44,6 @@ public class AppDB {
 
             var dao = new DAO(conn);
             dao.printTable("produto");
-            dao.printTable("estado");
             System.out.println();
 
             var regiao = new RegiaoGeografica();
@@ -58,14 +57,12 @@ public class AppDB {
             estado.setPopulacao(30000000);
 
             var estadoDAO = new EstadoDAO(conn);
-
             System.out.println(estado.getId());
-
             estadoDAO.insert(estado);
 
             estadoDAO.searchByUF("US");
             System.out.println();
-            estadoDAO.listAll();
+            dao.printTable("estado");
 
         } catch (SQLException e) {
             System.err.println("Não foi possível conectar ao DB");
