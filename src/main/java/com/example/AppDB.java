@@ -1,6 +1,5 @@
 package com.example;
 import java.sql.SQLException;
-
 import com.example.dao.ConnectionManager;
 import com.example.dao.EstadoDAO;
 import com.example.dao.DAO;
