@@ -1,17 +1,15 @@
 package com.example.dao;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.example.model.Produto;
 
-public class ProdutoDAO {
-    private Connection conn;
+public class ProdutoDAO extends DAO{
 
-    public ProdutoDAO(Connection conn) {
-        this.conn = conn;
+
+    public ProdutoDAO(Connection conn) throws SQLException {
+        super(conn);
     }
 
     public void insert(Produto produto) {
@@ -32,42 +30,6 @@ public class ProdutoDAO {
         } catch (SQLException e) {
             System.err.println("Insert Failed");
             e.printStackTrace();
-        }
-    }
-
-    public void findById(String tableName, long id) {
-        var sql = "select * from " + tableName +" where id = ?";
-
-        try {
-            var statement = conn.prepareStatement(sql);
-
-            statement.setLong(1, id);
-
-            var result = statement.executeQuery();
-            var metadata = result.getMetaData();
-
-            int col = metadata.getColumnCount();
-
-            printElement(result, metadata, col);
-
-        } catch (SQLException e) {
-            System.err.println("Element not found");
-            e.printStackTrace();
-        }
-    }
-
-    public void printElement(ResultSet result, ResultSetMetaData metadata, int col) throws SQLException {
-        if (result.next()) {
-            for (int i = 1; i <= col; i++) {
-                System.out.printf("%-25s | ", metadata.getColumnName(i));
-            }
-            System.out.println();
-
-            for (int i = 1; i <= col; i++) {
-                System.out.printf("%-25s | ", result.getString(i));
-            }
-            System.out.println();
-            System.out.println();
         }
     }
 

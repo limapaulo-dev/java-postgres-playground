@@ -1,4 +1,5 @@
 package com.example;
+
 import java.sql.SQLException;
 import com.example.dao.ConnectionManager;
 import com.example.dao.EstadoDAO;
@@ -49,17 +50,19 @@ public class AppDB {
             regiao.setId((long)5);
 
             var estado = new Estado();
-            estado.setNome("XXXXX");
-            estado.setUf("XX");
+            estado.setNome("União do Sul");
+            estado.setUf("US");
             estado.setRegiao(regiao);
             estado.setAreaKM(576774);
             estado.setPopulacao(30000000);
 
             var estadoDAO = new EstadoDAO(conn);
-            System.out.println(estado.getId());
-            estadoDAO.insert(estado);
 
-            estadoDAO.searchByUF("US");
+            estadoDAO.insert(estado);
+            estadoDAO.deleteByID("=", 30);
+
+            estadoDAO.searchByUF("PR");
+
             System.out.println();
             dao.printTable("estado");
 

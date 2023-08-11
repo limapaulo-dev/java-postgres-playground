@@ -1,4 +1,4 @@
-package com.example;
+package com.example.study;;
 
 public class Classes {
     public static void main(String[] args) {

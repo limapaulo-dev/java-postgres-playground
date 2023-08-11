@@ -6,23 +6,10 @@ import java.sql.SQLException;
 
 public class DAO {
 
-    private Connection conn;
+    protected Connection conn;
 
     public DAO(Connection conn) throws SQLException {
         this.conn = conn;
-    }
-
-    public void fixSeq(String campo, int index){
-        var sql = "ALTER SEQUENCE " + campo + " RESTART WITH " + index;
-
-        try {
-            var statement = conn.createStatement();
-            statement.executeUpdate(sql);
-
-        } catch (SQLException e) {
-            System.err.println("Query Failed");
-            e.printStackTrace();
-        }
     }
 
     public ResultSet findTable(String tableName) {
@@ -73,4 +60,63 @@ public class DAO {
         }
         System.out.println();
     }
+
+     public void findById(String tableName, long id) {
+        var sql = "select * from " + tableName +" where id = ?";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+
+            var result = statement.executeQuery();
+            var metadata = result.getMetaData();
+
+            int col = metadata.getColumnCount();
+
+            printElement(result, metadata, col);
+
+        } catch (SQLException e) {
+            System.err.println("Object not found");
+            e.printStackTrace();
+        }
+    }
+
+    public void printElement(ResultSet result, ResultSetMetaData metadata, int col) throws SQLException {
+        if (result.next()) {
+            for (int i = 1; i <= col; i++) {
+                System.out.printf("%-25s | ", metadata.getColumnName(i));
+            }
+            System.out.println();
+
+            for (int i = 1; i <= col; i++) {
+                System.out.printf("%-25s | ", result.getString(i));
+            }
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    public void deleteByID(String tablename, String operator, long id) {
+        var sql = "delete from " + tablename + "where id" + operator + "?";
+
+        try {
+            var statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+            findById(tablename, id);
+
+            if (statement.executeUpdate() >= 1) {
+                System.out.println("Object deleted");   
+            } else {
+                System.err.println("Delete Failed: Object not found");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Delete Failed");
+            e.printStackTrace();
+        }
+    }
 }
+
+
