@@ -63,7 +63,6 @@ public class MathUtilTest {
 
         assertEquals(spected, actual);
     }
-
     
     @Test
     void testMdcZeroArgs() {
