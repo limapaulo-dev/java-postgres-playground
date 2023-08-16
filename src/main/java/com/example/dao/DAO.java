@@ -97,6 +97,28 @@ public class DAO {
         }
     }
 
+    public void listarAlunos(Connection conn) throws SQLException{
+
+        var statement = conn.createStatement();
+
+        var queryAlunosSQL = "select matricula, nome, nota1, nota2, nota3 from alunos";
+        
+        ResultSet result = statement.executeQuery(queryAlunosSQL);
+
+        while(result.next()){
+            System.out.printf("Matrícula = %d | Nome = %-25s | nota1 = %5.2f | nota2 = %5.2f | nota3 = %5.2f ",
+            
+            result.getInt("matricula"),
+            result.getString("nome"),
+            result.getDouble("nota1"),
+            result.getDouble("nota2"),
+            result.getDouble("nota3")                
+            );
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public void deleteByID(String tablename, String operator, long id) {
         var sql = "delete from " + tablename + "where id" + operator + "?";
 
