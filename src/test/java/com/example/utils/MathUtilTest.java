@@ -55,6 +55,7 @@ public class MathUtilTest {
 
     @Test
     void testMdcP5() {
+
         Integer numbs[] = {-6, 0};
         Integer numbs2[] = {0, -6};
 
@@ -85,7 +86,7 @@ public class MathUtilTest {
 
     @Test
     void testMediaP1Zero() {
-        Double numbs[] = {0d, 0d};
+        Double[] numbs = {0d, 0d};
 
         double spected = 0;
 

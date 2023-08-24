@@ -1,7 +1,6 @@
 package com.example.study;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Listas {
 
@@ -57,8 +56,36 @@ public class Listas {
             System.out.println(cliente.getNome());
         }    
         System.out.println("------------------");
-        
-        List <Integer> notasTurma = new ArrayList<>();
 
+        int[] arr = {15, 54 ,55 ,90 ,2, 4};  
+        String[] arrString = {"luciana", "maria" , "joao", "roberto", "paulo"};  
+        
+        Arrays.sort(arr);  
+        Arrays.sort(arrString); 
+
+        System.out.println("--sorted int arr ---");
+        for (int x : arr) {
+            System.out.println(x);
+        }    
+        System.out.println("------------------");
+
+        System.out.println("--sorted str arr ---");
+        for (String x : arrString) {
+            System.out.println(x);
+        }    
+        System.out.println("------------------");
+           
+        List<String> stringList = Arrays.asList(arrString);
+        Collections.sort(stringList);
+
+        stringList.remove("roberto");  
+
+        System.out.println("--sorted str list ---");
+        for (String x : stringList) {
+            System.out.println(x);
+        }    
+        System.out.println("------------------");
+        
+        List <String> stringLinkList = new LinkedList<>(stringList);
     }
 }

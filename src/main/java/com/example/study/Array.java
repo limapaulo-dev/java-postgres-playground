@@ -66,6 +66,5 @@ public class Array {
     fillDoubleArray(doubleMatrix);
     printDoubleArray(doubleMatrix);
     System.out.println("");
-
     }
 }
